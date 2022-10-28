@@ -177,6 +177,7 @@ catkin_install_python(
   examples/sequence_from_yaml_example.py
   examples/sequencer_io_example.py
   examples/subframe_example.py
+  scripts/aims_move_group_sequence.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

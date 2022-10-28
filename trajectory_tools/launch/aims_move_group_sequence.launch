@@ -1,0 +1,7 @@
+<launch>
+    <arg name="sim" default="true"/>
+    <group if="$(arg sim)">
+        <include file="$(find ur10e_moveit_config)/launch/demo.launch"/>
+     </group>    
+    <node name="trajectory_example" pkg="trajectory_tools" type="aims_move_group_sequence.py" output="screen"/>   
+</launch>
