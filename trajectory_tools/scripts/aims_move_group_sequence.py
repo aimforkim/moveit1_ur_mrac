@@ -3,11 +3,10 @@
 from math import pi
 
 import rospy
-from tf.transformations import euler_from_quaternion, quaternion_from_euler
 from geometry_msgs.msg import Point, Pose, Quaternion
 from move_group_sequence.move_group_sequence import Circ, Lin, Ptp, Sequence, from_euler
 from trajectory_tools.trajectory_handler import TrajectoryHandler
-
+import tf.transformations
 
 def robot_program():
 
@@ -22,19 +21,20 @@ def robot_program():
     sequence.append(
         Ptp(
             goal=Pose(
-                position=Point(0.4, 0.0, 0.6),
-                orientation=Quaternion(0.0, 0.5, 0.5, 0.0),
+                position=Point(0.6, 0.4, 0.6),
+                orientation=Quaternion(0.0, 1.0, 0.0, 0.0),
             ),
-            vel_scale=0.1,
-            acc_scale=0.05,
+            vel_scale=0.2,
+            acc_scale=0.1,
         )
     )
-    
+###(0.0, -1.0, 0.0, 0.0)##
+
     sequence.append(
         Lin(
             goal=Pose(
-                position=Point(0.4, 0.3, 0.6),
-                orientation=Quaternion(0.0, 0.5, 0.5, 0.0),
+                position=Point(0.9, 0.4, 0.2),
+                orientation=Quaternion(0.0, 1.0, 0.0, 0.0),
             ),
             vel_scale=0.1,
             acc_scale=0.05,
@@ -45,55 +45,63 @@ def robot_program():
     sequence.append(
         Lin(
             goal=Pose(
-                position=Point(0.4, -0.3, 0.6),
-                orientation=Quaternion(0.0, 0.5, 0.5, 0.0),
+                position=Point(0.9, -0.4, 0.2),
+                orientation=Quaternion(0.0, 1.0, 0.0, 0.0),
             ),
             vel_scale=0.1,
             acc_scale=0.05,
         )
     )
 
-    sequence.append(
-        Circ(
-            goal=Pose(
-                position=Point(0.4, 0.0, 0.9),
-                orientation=Quaternion(0.0, 0.5, 0.5, 0.0),
-            ),
-            center=Point(0.4, 0.0, 0.6),
-        ),
-        blend_radius=0.01,
-    )
+    # sequence.append(
+    #     Ptp(
+    #         goal=Pose(
+    #             position=Point(0.6, -0.3, 0.6),
+    #             orientation=Quaternion(0.0, 1.0, 0.0, 0.0),
+    #         ),
+    #         vel_scale=0.1,
+    #         acc_scale=0.1,
+    #     )
+    # )
 
+    sequence.append(Ptp(goal=(th.start), vel_scale=0.2, acc_scale=0.1))
 
-    sequence.append(
-        Circ(
-            goal=Pose(
-                position=Point(0.4, 0.3, 0.6),
-                orientation=Quaternion(0.0, 0.5, 0.5, 0.0),
-            ),
-            center=Point(0.4, 0.0, 0.6),
-        ),
-        blend_radius=0.01,
-    )
+    # sequence.append(
+    #     Circ(
+    #         goal=Pose(
+    #             position=Point(0.4, 0.0, 0.9),
+    #             orientation=Quaternion(0.5, 0.5, 0.5, 0.5),
+    #         ),
+    #         center=Point(0.4, 0.0, 0.6),
+    #     ),
+    #     blend_radius=0.01,
+    # )
 
-    sequence.append(
-        Lin(
-            goal=Pose(
-                position=Point(0.4, 0.0, 0.6),
-                orientation=Quaternion(0.0, 0.5, 0.5, 0.0),
-            ),
-            vel_scale=0.1,
-            acc_scale=0.05,
-        )
-    )
+    # sequence.append(
+    #     Circ(
+    #         goal=Pose(
+    #             position=Point(0.4, 0.3, 0.6),
+    #             orientation=Quaternion(0.5, 0.5, 0.5, 0.5),
+    #         ),
+    #         center=Point(0.4, 0.0, 0.6),
+    #     ),
+    #     blend_radius=0.01,
+    # )
+
+    # sequence.append(
+    #     Lin(
+    #         goal=Pose(
+    #             position=Point(0.4, 0.0, 0.6),
+    #             orientation=Quaternion(0.5, 0.5, 0.5, 0.5),
+    #         ),
+    #         vel_scale=0.1,
+    #         acc_scale=0.05,
+    #     )
+    # )
 
     th.sequencer.plan(sequence)
 
-    #th.display_trajectory()
-    orientation_q = [0.5, 0.5, 0.5, 0.5]
-    print(f"Circle_orientation1: {euler_from_quaternion(orientation_q)}")
-    orientation_q = [0.0, 1.0, 0.0, 0.0]
-    print(f"Circle_orientation1: {euler_from_quaternion(orientation_q)}")
+    th.display_trajectory()
 
     th.sequencer.execute()
 
