@@ -27,6 +27,7 @@ import message_filters
 from industrial_reconstruction.utility.file import make_clean_folder, write_pose, read_pose, save_intrinsic_as_json, make_folder_keep_contents
 from industrial_reconstruction_msgs.srv import StartReconstruction, StartReconstructionResponse, StopReconstruction, StopReconstructionResponse
 from industrial_reconstruction.utility.ros import getIntrinsicsFromMsg, meshToRos, transformStampedToVectors
+from dateutil.parser import ParserError
 
 # ROS Image message -> OpenCV2 image converter
 from cv_bridge import CvBridge, CvBridgeError
