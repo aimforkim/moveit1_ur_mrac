@@ -88,7 +88,8 @@ RUN apt-get update && apt-get install -y \
     software-properties-common \
     ros-$ROS_DISTRO-rqt-image-view \
     ros-$ROS_DISTRO-ddynamic-reconfigure \
-    ros-$ROS_DISTRO-rgbd-launch 
+    ros-$ROS_DISTRO-rgbd-launch \
+    ros-$ROS_DISTRO-rosbridge-suite 
     
 # Add repo and install realsense pkgs
 RUN apt-key adv \
