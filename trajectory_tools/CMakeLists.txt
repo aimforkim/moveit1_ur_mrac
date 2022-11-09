@@ -179,6 +179,8 @@ catkin_install_python(
   examples/subframe_example.py
   scripts/aims_move_group_sequence.py
   scripts/aims_sequencer.py
+  scripts/test1_read_ghposes.py
+  scripts/test2_run_ghposes.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
