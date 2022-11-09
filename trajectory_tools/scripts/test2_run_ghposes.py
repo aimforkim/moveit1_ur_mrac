@@ -11,9 +11,10 @@ from typing import List
 
 def pose_from_list(pose_list: List[float]) -> Pose:
     pose = Pose(
-        position=Point(pose_list[0], pose_list[1], pose_list[2]), 
+        position=Point(-(pose_list[0]), pose_list[1], pose_list[2]), 
         orientation=Quaternion(pose_list[3], pose_list[4], pose_list[5], pose_list[6]))
-
+    return pose
+    
 def robot_program():
 
     th = TrajectoryHandler()
@@ -23,43 +24,38 @@ def robot_program():
 
     sequence = Sequence()
 
-        pose_list = rospy.get_param('gh_poses')
-        pose_goals = [pose_from_list(pose)for pose in pose_list]
-        print(pose_goals)
+    pose_list = rospy.get_param('gh_poses')
+    pose_goals = [pose_from_list(pose)for pose in pose_list]
 
     sequence.append(Ptp(goal=th.start))
 
-######th.start####
-##### for i in pose_goals: 
-    ###sequence.append(Lin((i),vel_scale = ?, acc_scale =?))
-###(0.0, -1.0, 0.0, 0.0)##
+    # sequence.append(
+    #     Lin(
+    #         goal=Pose(
+    #             position=Point(0.253, 0.0, 0.1),
+    #             orientation=Quaternion(1.0, 0.0, 0.0, 0.0),
+    #         ),
+    #         vel_scale=0.1,
+    #         acc_scale=0.05,
+    #     )
+    # )
+    # sequence.append(
+    #     Lin(
+    #         goal=Pose(
+    #             position=Point(0.38, 0.22, 0.1),
+    #             orientation=Quaternion(1.0, 0.0, 0.0, 0.0),
+    #         ),
+    #         vel_scale=0.1,
+    #         acc_scale=0.05,
+    #     )
+    # )    
 
-    sequence.append(
-        Lin(
-            goal=Pose(
-                position=Point(0.8, 0.4, 0.17),
-                orientation=Quaternion(0.0, 1.0, 0.0, 0.0),
-            ),
-            vel_scale=0.1,
-            acc_scale=0.05,
-        ),
-        blend_radius=0.01,
-    )
 
-    sequence.append(
-        Lin(
-            goal=Pose(
-                position=Point(0.8, -0.4, 0.17),
-                orientation=Quaternion(0.0, 1.0, 0.0, 0.0),
-            ),
-            vel_scale=0.1,
-            acc_scale=0.05,
-        )
-    )
+    for pose_goal in pose_goals:
+        sequence.append(Lin(goal=(pose_goal), vel_scale = 0.1, acc_scale = 0.05))
 
+    
     sequence.append(Ptp(goal=(th.start), vel_scale=0.2, acc_scale=0.1))
-
-
 
     th.sequencer.plan(sequence)
 
@@ -70,9 +66,4 @@ def robot_program():
 
 if __name__ == "__main__":
 
-    if rospy.has_param('gh_poses'):
-        pose_list = rospy.get_param('gh_poses')
-        pose_goals = [pose_from_list(pose)for pose in pose_list]
-        print(pose_goals)
-    else:
-        print("no poses")
+    robot_program()
