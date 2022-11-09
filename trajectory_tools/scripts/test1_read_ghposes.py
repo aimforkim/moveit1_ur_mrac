@@ -14,11 +14,13 @@ def pose_from_list(pose_list: List[float]) -> Pose:
         position=Point(pose_list[0], pose_list[1], pose_list[2]), 
         orientation=Quaternion(pose_list[3], pose_list[4], pose_list[5], pose_list[6]))
 
+    return pose
 
 if __name__ == "__main__":
 
     if rospy.has_param('gh_poses'):
         pose_list = rospy.get_param('gh_poses')
+        #print(pose_list)
         pose_goals = [pose_from_list(pose)for pose in pose_list]
         print(pose_goals)
     else:
