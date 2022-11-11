@@ -20,8 +20,8 @@ start_srv_req.relative_frame = "base_link"
 start_srv_req.translation_distance = 0.0
 start_srv_req.rotational_distance = 0.0
 start_srv_req.live = True
-start_srv_req.tsdf_params.voxel_length = 0.002
-start_srv_req.tsdf_params.sdf_trunc = 0.004
+start_srv_req.tsdf_params.voxel_length = 0.001
+start_srv_req.tsdf_params.sdf_trunc = 0.002
 start_srv_req.tsdf_params.min_box_values = Vector3(x=0.0, y=0.0, z=0.0)
 start_srv_req.tsdf_params.max_box_values = Vector3(x=0.0, y=0.0, z=0.0)
 start_srv_req.rgbd_params.depth_scale = 1000
@@ -30,7 +30,7 @@ start_srv_req.rgbd_params.convert_rgb_to_intensity = False
 
 stop_srv_req = StopReconstructionRequest()
 # stop_srv_req.archive_directory = '/dev_ws/src.reconstruction/'
-stop_srv_req.mesh_filepath = "/home/v/test.ply"
+stop_srv_req.mesh_filepath = "/home/aims/test.ply"
 # stop_srv_req.normal_filters = [NormalFilterParams(
 #                     normal_direction=Vector3(x=0.0, y=0.0, z=1.0), angle=90)]
 # stop_srv_req.min_num_faces = 1000
@@ -47,10 +47,10 @@ def robot_program():
 
     start = (0.0, -pi / 2.0, pi / 2.0, 0.0, pi / 2.0, 0.0)
     pose1 = Pose(
-        position=Point(0.6, -0.5, 0.2), orientation=Quaternion(0.0, 1.0, 0.0, 0.0)
+        position=Point(0.8, 0.4, 0.2), orientation=Quaternion(0.0, 1.0, 0.0, 0.0)
     )
     pose2 = Pose(
-        position=Point(0.6, 0.5, 0.2), orientation=Quaternion(0.0, 1.0, 0.0, 0.0)
+        position=Point(0.8, -0.4, 0.2), orientation=Quaternion(0.0, 1.0, 0.0, 0.0)
     )
 
     th = TrajectoryHandler()
@@ -64,9 +64,9 @@ def robot_program():
     )
 
     # Move into position to start reconstruction
-    th.sequencer.plan(Ptp(goal=start, vel_scale=0.1, acc_scale=0.1))
+    th.sequencer.plan(Ptp(goal=start, vel_scale=0.3, acc_scale=0.3))
     th.sequencer.execute()
-    th.sequencer.plan(Ptp(goal=pose1, vel_scale=0.1, acc_scale=0.1))
+    th.sequencer.plan(Ptp(goal=pose1, vel_scale=0.3, acc_scale=0.3))
     th.sequencer.execute()
 
     # Start reconstruction with service srv_req
@@ -77,14 +77,15 @@ def robot_program():
     else:
         rospy.loginfo("robot program: failed to start reconstruction")
 
-    th.sequencer.plan(Lin(goal=pose2, vel_scale=0.1, acc_scale=0.1))
+    th.sequencer.plan(Lin(goal=pose2, vel_scale=0.1, acc_scale=0.3))
     th.sequencer.execute()
 
     # Stop reconstruction with service srv_req
     resp = stop_recon(stop_srv_req)
-    
-    th.sequencer.plan(Ptp(goal=start, vel_scale=0.1, acc_scale=0.1))
+
+    th.sequencer.plan(Ptp(goal=start, vel_scale=0.3, acc_scale=0.3))
     th.sequencer.execute()
+
     if resp:
         rospy.loginfo("robot program: reconstruction stopped successfully")
     else:

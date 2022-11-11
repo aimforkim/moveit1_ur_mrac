@@ -33,7 +33,7 @@ def robot_program():
     sequence.append(
         Lin(
             goal=Pose(
-                position=Point(0.8, 0.4, 0.17),
+                position=Point(0.8, 0.4, 0.25),
                 orientation=Quaternion(0.0, 1.0, 0.0, 0.0),
             ),
             vel_scale=0.1,
@@ -45,7 +45,7 @@ def robot_program():
     sequence.append(
         Lin(
             goal=Pose(
-                position=Point(0.8, -0.4, 0.17),
+                position=Point(0.8, -0.4, 0.25),
                 orientation=Quaternion(0.0, 1.0, 0.0, 0.0),
             ),
             vel_scale=0.1,
