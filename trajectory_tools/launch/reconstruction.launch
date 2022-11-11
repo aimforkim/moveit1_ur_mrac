@@ -18,5 +18,5 @@
         <arg name="camera_info_topic" value="/camera/color/camera_info" />
     </include>
     <!-- Moveit Commander -->
-    <!--node name="scanning_example" pkg="trajectory_tools" type="scanning_example.py" output="screen" /-->
+    <!--node name="scanning_example" pkg="trajectory_tools" type="aims_scanning.py" output="screen" /-->
 </launch>

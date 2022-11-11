@@ -20,8 +20,8 @@ start_srv_req.relative_frame = "base_link"
 start_srv_req.translation_distance = 0.0
 start_srv_req.rotational_distance = 0.0
 start_srv_req.live = True
-start_srv_req.tsdf_params.voxel_length = 0.001
-start_srv_req.tsdf_params.sdf_trunc = 0.002
+start_srv_req.tsdf_params.voxel_length = 0.002
+start_srv_req.tsdf_params.sdf_trunc = 0.004
 start_srv_req.tsdf_params.min_box_values = Vector3(x=0.0, y=0.0, z=0.0)
 start_srv_req.tsdf_params.max_box_values = Vector3(x=0.0, y=0.0, z=0.0)
 start_srv_req.rgbd_params.depth_scale = 1000
@@ -39,21 +39,27 @@ stop_srv_req.mesh_filepath = "/home/aims/test.ply"
 def robot_program():
 
     ee_name = "D405"
+    th = TrajectoryHandler()
 
     rospy.wait_for_service("/start_reconstruction")
     rospy.loginfo("robot program: waiting for /start_reconstruction srv")
     start_recon = rospy.ServiceProxy("/start_reconstruction", StartReconstruction)
     stop_recon = rospy.ServiceProxy("/stop_reconstruction", StopReconstruction)
 
-    start = (0.0, -pi / 2.0, pi / 2.0, 0.0, pi / 2.0, 0.0)
+    #start = (0.0, -pi / 2.0, pi / 2.0, 0.0, pi / 2.0, 0.0)
+    start = th.start
     pose1 = Pose(
-        position=Point(0.8, 0.4, 0.2), orientation=Quaternion(0.0, 1.0, 0.0, 0.0)
+        position=Point(0.75, 0.5, 0.18), orientation=Quaternion(0.0, 1.0, 0.0, 0.0)
     )
     pose2 = Pose(
-        position=Point(0.8, -0.4, 0.2), orientation=Quaternion(0.0, 1.0, 0.0, 0.0)
+        position=Point(0.75, 0.0, 0.18), orientation=Quaternion(0.0, 1.0, 0.0, 0.0)
+    )
+    pose3 = Pose(
+        position=Point(0.75, -0.6, 0.18), orientation=Quaternion(0.0, 1.0, 0.0, 0.0)
     )
 
-    th = TrajectoryHandler()
+
+
     th.publish_marker_array([pose1, pose2])
 
     # attach camera and set new tcp
@@ -77,9 +83,13 @@ def robot_program():
     else:
         rospy.loginfo("robot program: failed to start reconstruction")
 
-    th.sequencer.plan(Lin(goal=pose2, vel_scale=0.1, acc_scale=0.3))
+    th.sequencer.plan(Lin(goal=pose2, vel_scale=0.1, acc_scale=0.1))
     th.sequencer.execute()
 
+    th.sequencer.plan(Lin(goal=pose2, vel_scale=0.1, acc_scale=0.1))
+    th.sequencer.execute()
+
+    #rospy.sleep(1.0)
     # Stop reconstruction with service srv_req
     resp = stop_recon(stop_srv_req)
 

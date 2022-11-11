@@ -11,25 +11,21 @@ def robot_program():
 
     th = TrajectoryHandler()
 
-    start = (0.0, -pi / 2.0, pi / 2.0, 0.0, pi / 2.0, 0.0)
-    # pose_l = Pose(position=Point(0.8, 0.2, 0.17),
-    #               orientation=from_euler(0.0, pi, 0.0))
-    # pose_r = Pose(position=Point(0.8, 0.05, 0.17),
-    #               orientation=from_euler(0.0, pi, 0.0))
+    start = th.start
 
     #start = (0.0, -pi / 2.0, pi / 2.0, 0.0, pi / 2.0, 0.0)
-    pose_l = Pose(position=Point(0.8, 0.4, 0.2),
+    pose_l = Pose(position=Point(0.75, 0.4, 0.18),
                   orientation=Quaternion(0.0, 1.0, 0.0, 0.0))
-    pose_r = Pose(position=Point(0.8, -0.4, 0.2),
+    pose_r = Pose(position=Point(0.75, -0.2, 0.18),
                   orientation=Quaternion(0.0, 1.0, 0.0, 0.0))
 
-    poses = [start]
-    #poses = [start, pose_l, pose_r, start]
+    #poses = [start]
+    poses = [start, pose_l, pose_r, start]
 
     th.publish_marker_array([pose_l, pose_r])
 
     for pose in poses:
-        th.sequencer.plan(Ptp(goal=pose, vel_scale=0.15, acc_scale=0.15))
+        th.sequencer.plan(Ptp(goal=pose, vel_scale=0.2, acc_scale=0.2))
         th.sequencer.execute()
 
 
