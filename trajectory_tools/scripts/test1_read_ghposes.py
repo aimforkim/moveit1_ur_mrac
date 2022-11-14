@@ -11,7 +11,7 @@ from typing import List
 
 def pose_from_list(pose_list: List[float]) -> Pose:
     pose = Pose(
-        position=Point(pose_list[0], pose_list[1], pose_list[2]), 
+        position=Point(-(pose_list[0]), pose_list[1], pose_list[2]), 
         orientation=Quaternion(pose_list[3], pose_list[4], pose_list[5], pose_list[6]))
 
     return pose

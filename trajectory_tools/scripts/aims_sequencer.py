@@ -14,13 +14,13 @@ def robot_program():
     start = th.start
 
     #start = (0.0, -pi / 2.0, pi / 2.0, 0.0, pi / 2.0, 0.0)
-    pose_l = Pose(position=Point(0.75, 0.4, 0.18),
+    pose_l = Pose(position=Point(0.75, 0.2, 0.2),
                   orientation=Quaternion(0.0, 1.0, 0.0, 0.0))
-    pose_r = Pose(position=Point(0.75, -0.2, 0.18),
+    pose_r = Pose(position=Point(0.75, -0.2, 0.2),
                   orientation=Quaternion(0.0, 1.0, 0.0, 0.0))
 
     #poses = [start]
-    poses = [start, pose_l, pose_r, start]
+    poses = [start]
 
     th.publish_marker_array([pose_l, pose_r])
 

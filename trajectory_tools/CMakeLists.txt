@@ -182,6 +182,8 @@ catkin_install_python(
   scripts/test1_read_ghposes.py
   scripts/test2_run_ghposes.py
   scripts/aims_scanning.py
+  scripts/aims_sequence_from_yaml.py
+  scripts/aims_scan_from_yaml.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

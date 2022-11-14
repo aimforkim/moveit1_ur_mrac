@@ -38,18 +38,6 @@ def robot_program():
     #         vel_scale=0.1,
     #         acc_scale=0.05,
     #     )
-    # )
-    # sequence.append(
-    #     Lin(
-    #         goal=Pose(
-    #             position=Point(0.38, 0.22, 0.1),
-    #             orientation=Quaternion(1.0, 0.0, 0.0, 0.0),
-    #         ),
-    #         vel_scale=0.1,
-    #         acc_scale=0.05,
-    #     )
-    # )    
-
 
     for pose_goal in pose_goals:
         sequence.append(Lin(goal=(pose_goal), vel_scale = 0.1, acc_scale = 0.05))

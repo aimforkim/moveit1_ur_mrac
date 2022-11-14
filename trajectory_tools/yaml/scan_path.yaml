@@ -1,0 +1,15 @@
+---
+#GH generated yaml
+path:
+ - pose_id: 0
+   position: [0.75, 0.5 , 0.2]
+   quaternion: [0.0, 1.0, 0.0, 0.0]
+ - pose_id: 1
+   position: [0.75, -0.5 , 0.2]
+   quaternion: [0.0, 1.0, 0.0, 0.0]
+ - pose_id: 2
+   position: [0.85, -0.5 , 0.2]
+   quaternion: [0.0, 1.0, 0.0, 0.0]
+ - pose_id: 3
+   position: [0.85, 0.5 , 0.2]
+   quaternion: [0.0, 1.0, 0.0, 0.0]
