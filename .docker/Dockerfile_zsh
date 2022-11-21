@@ -83,12 +83,17 @@ RUN apt-get update && apt-get install -y \
     ros-$ROSDISTRO-rqt-py-common \
     python3-matplotlib \
     #STOMP
-    ros-$ROSDISTRO-ros-industrial-cmake-boilerplate \
+    #ros-$ROSDISTRO-ros-industrial-cmake-boilerplate \
     # Realsense
     software-properties-common \
     ros-$ROS_DISTRO-rqt-image-view \
     ros-$ROS_DISTRO-ddynamic-reconfigure \
     ros-$ROS_DISTRO-rgbd-launch \
+    # Astra
+    libuvc-dev \
+    ros-$ROS_DISTRO-rgbd-launch \
+    ros-$ROS_DISTRO-libuvc-camera \
+    ros-$ROS_DISTRO-libuvc-ros \
     # roslibpy
     ros-$ROS_DISTRO-rosbridge-suite 
     ## Foxglove

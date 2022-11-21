@@ -84,6 +84,11 @@ RUN apt-get update && apt-get install -y \
     python3-matplotlib \
     # STOMP dependencies
     ros-$ROSDISTRO-ros-industrial-cmake-boilerplate \
+    # Astra
+    libuvc-dev \
+    ros-$ROS_DISTRO-rgbd-launch \
+    ros-$ROS_DISTRO-libuvc-camera \
+    ros-$ROS_DISTRO-libuvc-ros \
     # Realsense dependencies
     software-properties-common \
     ros-$ROS_DISTRO-rqt-image-view \
