@@ -86,9 +86,9 @@ RUN apt-get update && apt-get install -y \
     ros-$ROSDISTRO-ros-industrial-cmake-boilerplate \
     # Astra
     ros-$ROS_DISTRO-rgbd-launch \
-    ros-$ROS_DISTRO-libuvc \
-    ros-$ROS_DISTRO-libuvc-camera \
-    ros-$ROS_DISTRO-libuvc-ros \
+    # ros-$ROS_DISTRO-libuvc \
+    # ros-$ROS_DISTRO-libuvc-camera \
+    # ros-$ROS_DISTRO-libuvc-ros \
     # Realsense dependencies
     software-properties-common \
     ros-$ROS_DISTRO-rqt-image-view \
