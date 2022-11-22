@@ -11,7 +11,7 @@ from industrial_reconstruction_msgs.srv import (StartReconstruction,
                                                 StopReconstructionRequest)
 from move_group_sequence.move_group_sequence import (Circ, Lin, Ptp, Sequence,
                                                      from_euler)
-from trajectory_tools.trajectory_handler import TrajectoryHandler
+from trajectory_tools.trajectory_handler import TrajectoryHandler, poses_from_yaml
 
 # reconstruction parameters
 start_srv_req = StartReconstructionRequest()
@@ -25,7 +25,7 @@ start_srv_req.tsdf_params.sdf_trunc = 0.004
 start_srv_req.tsdf_params.min_box_values = Vector3(x=0.0, y=0.0, z=0.0)
 start_srv_req.tsdf_params.max_box_values = Vector3(x=0.0, y=0.0, z=0.0)
 start_srv_req.rgbd_params.depth_scale = 1000
-start_srv_req.rgbd_params.depth_trunc = 0.25
+start_srv_req.rgbd_params.depth_trunc = 0.10
 start_srv_req.rgbd_params.convert_rgb_to_intensity = False
 
 stop_srv_req = StopReconstructionRequest()
