@@ -83,18 +83,24 @@ RUN apt-get update && apt-get install -y \
     ros-$ROSDISTRO-rqt-py-common \
     python3-matplotlib \
     # STOMP dependencies
-    ros-$ROSDISTRO-ros-industrial-cmake-boilerplate \
-    # Astra
-    ros-$ROS_DISTRO-rgbd-launch \
-    # ros-$ROS_DISTRO-libuvc \
-    # ros-$ROS_DISTRO-libuvc-camera \
-    # ros-$ROS_DISTRO-libuvc-ros \
+    # ros-$ROSDISTRO-ros-industrial-cmake-boilerplate \
+
     # Realsense dependencies
     software-properties-common \
     ros-$ROS_DISTRO-rqt-image-view \
     ros-$ROS_DISTRO-ddynamic-reconfigure \
     ros-$ROS_DISTRO-rgbd-launch \
-    ros-$ROS_DISTRO-rosbridge-suite 
+    #roslibpy
+    ros-$ROS_DISTRO-rosbridge-suite \
+    #Astra
+    libgflags-dev \
+    ros-$ROS_DISTRO-image-geometry \
+    ros-$ROS_DISTRO-camera-info-manager \
+    ros-$ROS_DISTRO-image-transport \
+    ros-$ROS_DISTRO-image-publisher \
+    libgoogle-glog-dev \
+    libusb-1.0-0-dev \
+    libeigen3-dev 
     
 # Add repo and install realsense pkgs
 RUN apt-key adv \
@@ -115,23 +121,34 @@ RUN ["/bin/bash", "-c", "rm -rf /var/lib/apt/lists/*"]
 RUN echo "* - nice -15" >> /etc/security/limits.conf
 
 # build STOMP dependency nlopt
-RUN ["/bin/bash", "-c", "git clone https://github.com/stevengj/nlopt.git &&\
-    cd nlopt &&\
-    mkdir build &&\
-    cd build &&\
-    cmake .. &&\
-    make &&\
-    make install"]
+# RUN ["/bin/bash", "-c", "git clone https://github.com/stevengj/nlopt.git &&\
+#     cd nlopt &&\
+#     mkdir build &&\
+#     cd build &&\
+#     cmake .. &&\
+#     make &&\
+#     make install"]
+
+# build libuvc depency astra
+RUN ["/bin/bash", "-c", "git clone https://github.com/libuvc/libuvc.git &&\
+    cd libuvc &&\
+    mkdir build && cd build &&\
+    cmake .. && make -j4 &&\
+    sudo make install &&\
+    sudo ldconfig"]
 
 # Create workspace
 RUN mkdir -p dev_ws/src
 WORKDIR /dev_ws/src
 
 # Clone STOMP and rqt_joint_trajectory pkgs
-RUN ["/bin/bash", "-c", "git clone https://github.com/ros-industrial/stomp.git &&\
-    git clone https://github.com/ros-industrial/stomp_ros.git &&\
-    git clone https://github.com/tork-a/rqt_joint_trajectory_plot.git &&\
-    git clone https://github.com/rjwb1/realsense-ros.git"]
+# RUN ["/bin/bash", "-c", "git clone https://github.com/ros-industrial/stomp.git &&\
+#     git clone https://github.com/ros-industrial/stomp_ros.git &&\
+#     git clone https://github.com/tork-a/rqt_joint_trajectory_plot.git &&\
+# Clone pkgs (rqt_joint_trajectory, realsense, astra)
+RUN ["/bin/bash", "-c", "git clone https://github.com/tork-a/rqt_joint_trajectory_plot.git &&\
+    git clone https://github.com/rjwb1/realsense-ros.git &&\
+    git clone https://github.com/orbbec/ros_astra_camera.git"]
 
 # Copy local pkg's from host to container
 COPY . /dev_ws/src/
