@@ -85,8 +85,8 @@ RUN apt-get update && apt-get install -y \
     # STOMP dependencies
     ros-$ROSDISTRO-ros-industrial-cmake-boilerplate \
     # Astra
-    libuvc-dev \
     ros-$ROS_DISTRO-rgbd-launch \
+    ros-$ROS_DISTRO-libuvc \
     ros-$ROS_DISTRO-libuvc-camera \
     ros-$ROS_DISTRO-libuvc-ros \
     # Realsense dependencies
