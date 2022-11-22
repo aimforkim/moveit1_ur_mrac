@@ -84,7 +84,6 @@ RUN apt-get update && apt-get install -y \
     python3-matplotlib \
     # STOMP dependencies
     # ros-$ROSDISTRO-ros-industrial-cmake-boilerplate \
-
     # Realsense dependencies
     software-properties-common \
     ros-$ROS_DISTRO-rqt-image-view \
