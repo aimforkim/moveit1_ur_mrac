@@ -147,7 +147,8 @@ WORKDIR /dev_ws/src
 # Clone pkgs (rqt_joint_trajectory, realsense, astra)
 RUN ["/bin/bash", "-c", "git clone https://github.com/tork-a/rqt_joint_trajectory_plot.git &&\
     git clone https://github.com/rjwb1/realsense-ros.git &&\
-    git clone https://github.com/orbbec/ros_astra_camera.git"]
+    git clone https://github.com/orbbec/ros_astra_camera.git &&\
+    git clone https://github.com/ros-perception/image_pipeline.git"]
 
 # Copy local pkg's from host to container
 COPY . /dev_ws/src/
