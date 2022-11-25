@@ -24,6 +24,7 @@ from std_msgs.msg import Header
 from ur_msgs.srv import SetIO
 from visualization_msgs.msg import Marker, MarkerArray
 from yaml import safe_load
+from trajectory_tools.srv import VisualizePoses
 
 PLANNING_GROUP = "manipulator"
 
@@ -109,6 +110,35 @@ class TrajectoryHandler:
         display_trajectory.trajectory.append(self.sequencer._trajectories[0])
 
         self.display_trajectory_publisher.publish(display_trajectory)
+
+    def publish_pose_array(self,
+	                           poses: List[Pose],
+	                           frame_id: str = None
+	                           ) -> bool:
+	
+        if frame_id is None:
+            frame_id = self.move_group.get_planning_frame()
+
+        rospy.wait_for_service('/mgu/visualize_poses', 10)
+        srv = rospy.ServiceProxy('/mgu/visualize_poses', VisualizePoses)
+
+        return srv(frame_id, poses)
+
+    @staticmethod
+    def publish_poses_as_pose_array(poses: List[Pose]) -> None:
+
+        pub = rospy.Publisher("th_pose_array_publisher", PoseArray, queue_size=10)
+
+        pose_array = PoseArray()
+        pose_array.header = Header()
+        pose_array.header.frame_id = "base_link"
+        pose_array.header.stamp = rospy.Time.now()
+        pose_array.poses = poses
+
+        for i in range(10):
+            pub.publish(pose_array)
+            rospy.sleep(0.2)
+
 
     def add_collision_object(self, co: CollisionObject) -> bool:
 
@@ -366,21 +396,6 @@ def poses_from_yaml(filepath: str) -> List[Pose]:
             poses.append(p)
 
     return poses
-
-
-def publish_poses_as_pose_array(poses: List[Pose]) -> None:
-
-    pub = rospy.Publisher("pose_array_publisher", PoseArray, queue_size=10)
-
-    pose_array = PoseArray()
-    pose_array.header = Header()
-    pose_array.header.frame_id = "base_link"
-    pose_array.header.stamp = rospy.Time.now()
-    pose_array.poses = poses
-
-    for counter in range(10):
-        pub.publish(pose_array)
-        rospy.sleep(0.1)
 
 
 def clear_marker_array() -> None:

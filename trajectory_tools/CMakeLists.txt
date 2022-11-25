@@ -61,6 +61,7 @@ catkin_python_setup()
 add_service_files(
   FILES
   RandomPose.srv
+  VisualizePoses.srv
 )
 
 ## Generate actions in the 'action' folder
@@ -180,10 +181,12 @@ catkin_install_python(
   scripts/aims_move_group_sequence.py
   scripts/aims_sequencer.py
   scripts/test1_read_ghposes.py
+  scripts/test1_run_ghposes.py
   scripts/test2_run_ghposes.py
   scripts/aims_scanning.py
   scripts/aims_sequence_from_yaml.py
   scripts/aims_scan_from_yaml.py
+  scripts/pose_array_pub.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

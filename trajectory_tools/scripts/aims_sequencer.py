@@ -11,7 +11,8 @@ def robot_program():
 
     th = TrajectoryHandler()
 
-    start = th.start
+    # start = th.start
+    start = (0.0, -pi / 2.0, pi / 2.0, -pi, -pi / 2.0, 0.0)
 
     #start = (0.0, -pi / 2.0, pi / 2.0, 0.0, pi / 2.0, 0.0)
     pose_l = Pose(position=Point(0.75, 0.2, 0.2),
