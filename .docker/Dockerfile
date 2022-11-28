@@ -14,7 +14,7 @@ ENV TERM xterm-256color
 # Remove display warnings rviz rqt
 RUN mkdir /tmp/runtime-root
 ENV XDG_RUNTIME_DIR "/tmp/runtime-root"
-RUN chmod -R 0700 /tmp/runtime-root
+RUN chmod -R 0777 /tmp/runtime-root
 ENV NO_AT_BRIDGE 1
 
 # Install tools
