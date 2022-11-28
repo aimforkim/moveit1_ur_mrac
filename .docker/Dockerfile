@@ -105,7 +105,8 @@ RUN apt-get update && apt-get install -y \
     ros-$ROS_DISTRO-image-publisher \
     libgoogle-glog-dev \
     libusb-1.0-0-dev \
-    libeigen3-dev 
+    libeigen3-dev \
+    ros-$ROS_DISTRO-openni2-launch 
     
 # Add repo and install realsense pkgs
 RUN apt-key adv \
