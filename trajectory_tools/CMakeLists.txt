@@ -187,6 +187,7 @@ catkin_install_python(
   scripts/aims_sequence_from_yaml.py
   scripts/aims_scan_from_yaml.py
   scripts/pose_array_pub.py
+  scripts/aims_scan_from_gh.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
