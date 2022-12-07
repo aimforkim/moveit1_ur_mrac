@@ -28,26 +28,24 @@ def robot_program():
 
     pose_list = rospy.get_param('gh_poses')
     pose_goals = [pose_from_list(pose)for pose in pose_list]
+    pose1 = pose_goals[0]
     
     # th.publish_pose_array(pose_goals)
     th.publish_poses_as_pose_array(pose_goals)
 
-    sequence.append(Ptp(goal=start))
-    # sequence.append(
-    #     Lin(
-    #         goal=Pose(
-    #             position=Point(0.253, 0.0, 0.1),
-    #             orientation=Quaternion(1.0, 0.0, 0.0, 0.0),
-    #         ),
-    #         vel_scale=0.1,
-    #         acc_scale=0.05,
-    #     )
+    th.sequencer.plan(Ptp(goal=start, vel_scale=0.3, acc_scale=0.3))
+    th.sequencer.execute()
 
-    for pose_goal in pose_goals:
-        sequence.append(Lin(goal=(pose_goal), vel_scale = 0.1, acc_scale = 0.05))
+    th.sequencer.plan(Ptp(goal=pose1, vel_scale=0.3, acc_scale=0.3))
+    th.sequencer.execute()
+
+    for pose_goal in pose_goals[1:]:
+        th.sequencer.plan(Lin(goal=(pose_goal), vel_scale = 0.1, acc_scale = 0.1))
+        th.sequencer.execute()
     
     
-    sequence.append(Ptp(goal=(start), vel_scale=0.2, acc_scale=0.05))
+    th.sequencer.plan(Ptp(goal=start, vel_scale=0.3, acc_scale=0.3))
+    th.sequencer.execute()
     
     th.sequencer.plan(sequence)
 

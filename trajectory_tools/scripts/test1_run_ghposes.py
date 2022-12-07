@@ -3,10 +3,15 @@
 from math import pi
 
 import rospy
-from geometry_msgs.msg import Point, Pose, Quaternion
-from move_group_sequence.move_group_sequence import Circ, Lin, Ptp, Sequence, from_euler
-from trajectory_tools.trajectory_handler import TrajectoryHandler
-import tf.transformations
+from geometry_msgs.msg import Point, Pose, Quaternion, Vector3
+from industrial_reconstruction_msgs.msg import NormalFilterParams
+from industrial_reconstruction_msgs.srv import (StartReconstruction,
+                                                StartReconstructionRequest,
+                                                StopReconstruction,
+                                                StopReconstructionRequest)
+from move_group_sequence.move_group_sequence import (Circ, Lin, Ptp, Sequence,
+                                                     from_euler)
+from trajectory_tools.trajectory_handler import TrajectoryHandler, poses_from_yaml
 from typing import List
 
 def pose_from_list(pose_list: List[float]) -> Pose:
@@ -25,23 +30,24 @@ def robot_program():
 
     sequence = Sequence()
 
-    pose_list = rospy.get_param('gh_poses')
-    pose_goals = [pose_from_list(pose)for pose in pose_list]
+    # create pose mgs list form yaml
+    poses = poses_from_yaml("/dev_ws/src/trajectory_tools/yaml/scan_path.yaml")
 
-    sequence.append(Ptp(goal=start))
+    # publish the poses to rviz for preview
+    # th.publish_poses_as_pose_array(poses)
+    th.publish_marker_array(poses)
 
-    # sequence.append(
-    #     Lin(
-    #         goal=Pose(
-    #             position=Point(0.253, 0.0, 0.1),
-    #             orientation=Quaternion(1.0, 0.0, 0.0, 0.0),
-    #         ),
-    #         vel_scale=0.1,
-    #         acc_scale=0.05,
-    #     )
+  # Move into position to start reconstruction
+    th.sequencer.plan(Ptp(goal=start, vel_scale=0.3, acc_scale=0.3))
+    th.sequencer.execute()
 
-    for pose_goal in pose_goals:
-        sequence.append(Lin(goal=(pose_goal), vel_scale = 0.1, acc_scale = 0.05))
+    pose1 = poses[0]
+    th.sequencer.plan(Ptp(goal=pose1, vel_scale=0.3, acc_scale=0.3))
+    th.sequencer.execute()
+
+    for pose_goal in poses[1:]:
+        th.sequencer.plan(Lin(goal=(pose_goal), vel_scale = 0.1, acc_scale = 0.05))
+        th.sequencer.execute()
 
     
     sequence.append(Ptp(goal=(start), vel_scale=0.2, acc_scale=0.1))

@@ -48,39 +48,31 @@ def robot_program():
 
     #start = (0.0, -pi / 2.0, pi / 2.0, 0.0, pi / 2.0, 0.0)
     start = th.start
-    pose1 = Pose(
-        position=Point(0.75, 0.5, 0.2), orientation=Quaternion(0.0, 1.0, 0.0, 0.0)
-    )
-    pose2 = Pose(
-        position=Point(0.75, -0.6, 0.2), orientation=Quaternion(0.0, 1.0, 0.0, 0.0)
-    )
+    # create pose mgs list form yaml
+    poses = poses_from_yaml("/dev_ws/src/trajectory_tools/yaml/scan_path.yaml")
 
-    th.publish_marker_array([pose1, pose2])
+    # publish the poses to rviz for preview
+    # th.publish_poses_as_pose_array(poses)
+    th.publish_marker_array(poses)
 
-    # attach camera and set new tcp
-    th.attach_camera(ee_name)
-    th.move_group.set_end_effector_link(f"{ee_name}/tcp")
-    rospy.loginfo(
-        f"{th.name}: end effector link set to {th.move_group.get_end_effector_link()}"
-    )
-
-    # Move into position to start reconstruction
+  # Move into position to start reconstruction
     th.sequencer.plan(Ptp(goal=start, vel_scale=0.3, acc_scale=0.3))
     th.sequencer.execute()
+
+    pose1 = poses[0]
     th.sequencer.plan(Ptp(goal=pose1, vel_scale=0.3, acc_scale=0.3))
     th.sequencer.execute()
 
     # Start reconstruction with service srv_req
     resp = start_recon(start_srv_req)
-
     if resp:
         rospy.loginfo("robot program: reconstruction started successfully")
     else:
         rospy.loginfo("robot program: failed to start reconstruction")
-
-    th.sequencer.plan(Lin(goal=pose2, vel_scale=0.05, acc_scale=0.05))
-    th.sequencer.execute()
-
+    
+    for pose_goal in poses[1:]:
+        th.sequencer.plan(Lin(goal=(pose_goal), vel_scale = 0.1, acc_scale = 0.05))
+        th.sequencer.execute()
 
     #rospy.sleep(1.0)
     # Stop reconstruction with service srv_req
@@ -88,6 +80,11 @@ def robot_program():
 
     th.sequencer.plan(Ptp(goal=start, vel_scale=0.3, acc_scale=0.3))
     th.sequencer.execute()
+
+    if resp:
+        rospy.loginfo("robot program: reconstruction stopped successfully")
+    else:
+        rospy.loginfo("robot program: failed to stop reconstruction")
 
     if resp:
         rospy.loginfo("robot program: reconstruction stopped successfully")
