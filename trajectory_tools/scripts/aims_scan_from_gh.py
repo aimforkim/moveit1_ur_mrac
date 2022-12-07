@@ -91,8 +91,8 @@ def robot_program():
     th.sequencer.plan(Ptp(goal=pose_goals[2],vel_scale=0.1, acc_scale=0.1))
     th.sequencer.execute()
 
-    # th.sequencer.plan(Ptp(goal=pose_goals[3],vel_scale=0.1, acc_scale=0.1))
-    # th.sequencer.execute()
+    th.sequencer.plan(Ptp(goal=pose_goals[3],vel_scale=0.1, acc_scale=0.1))
+    th.sequencer.execute()
     # th.sequencer.plan(Lin(goal=pose_goals[4],vel_scale=0.1, acc_scale=0.1))
     # th.sequencer.execute()
     # Stop reconstruction with service srv_req

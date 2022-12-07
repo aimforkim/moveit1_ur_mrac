@@ -14,12 +14,8 @@ from move_group_sequence.move_group_sequence import (Circ, Lin, Ptp, Sequence,
 from trajectory_tools.trajectory_handler import TrajectoryHandler, poses_from_yaml
 from typing import List
 
-def pose_from_list(pose_list: List[float]) -> Pose:
-    pose = Pose(
-        position=Point(-(pose_list[0]), pose_list[1], pose_list[2]), 
-        orientation=Quaternion(pose_list[3], pose_list[4], pose_list[5], pose_list[6]))
-    return pose
-    
+
+
 def robot_program():
 
     th = TrajectoryHandler()
