@@ -15,24 +15,6 @@ from trajectory_tools.trajectory_handler import TrajectoryHandler, poses_from_ya
 from typing import List
 from yaml import safe_load
 
-def read_yaml(filepath: str) -> List[Pose]:
-
-    poses = []
-
-    with open(filepath, "r", encoding="utf-8") as file:
-        y = safe_load(file)
-        for pose in y.get("path"):
-            p = Pose()
-            p.position.x = pose["position"][0]
-            p.position.y = pose["position"][1]
-            p.position.z = pose["position"][2]
-            p.orientation.w = pose["quaternion"][0]
-            p.orientation.x = pose["quaternion"][1]
-            p.orientation.y = pose["quaternion"][2]
-            p.orientation.z = pose["quaternion"][3]
-            poses.append(p)
-
-    return poses
 def robot_program():
 
     th = TrajectoryHandler()
@@ -43,7 +25,7 @@ def robot_program():
 
 
     # create pose mgs list form yaml
-    poses = read_yaml("/dev_ws/src/trajectory_tools/yaml/scan_path.yaml")
+    poses = poses_from_yaml("/dev_ws/src/trajectory_tools/yaml/scan_path.yaml")
 
     #define speed
     ptp_vel = 0.3
@@ -59,8 +41,8 @@ def robot_program():
     th.sequencer.plan(Ptp(goal=poses[0], vel_scale=ptp_vel, acc_scale= ptp_acc))
     th.sequencer.execute()
 
-    th.sequencer.plan(Lin(goal=poses[1], vel_scale=scan_vel, acc_scale=scan_acc))
-    th.sequencer.execute()
+    # th.sequencer.plan(Lin(goal=poses[1], vel_scale=scan_vel, acc_scale=scan_acc))
+    # th.sequencer.execute()
 
     # th.sequencer.plan(Ptp(goal=poses[2], vel_scale=scan_vel, acc_scale=scan_acc))
     # th.sequencer.execute()
@@ -79,7 +61,7 @@ def robot_program():
 
     # th.sequencer.plan(Lin(goal=poses[7], vel_scale=scan_vel, acc_scale=scan_acc))
     # th.sequencer.execute()
-    for pose_goal in poses[2:]:
+    for pose_goal in poses[1:]:
         th.sequencer.plan(Ptp(goal=(pose_goal), vel_scale = 0.1, acc_scale = 0.1))
         th.sequencer.execute()
     

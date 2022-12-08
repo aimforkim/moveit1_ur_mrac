@@ -46,8 +46,8 @@ def robot_program():
     start_recon = rospy.ServiceProxy("/start_reconstruction", StartReconstruction)
     stop_recon = rospy.ServiceProxy("/stop_reconstruction", StopReconstruction)
 
-    #start = (0.0, -pi / 2.0, pi / 2.0, 0.0, pi / 2.0, 0.0)
-    start = th.start
+    start = (0.0, -pi / 2.0, pi / 2.0, -pi, -pi / 2.0, 0.0)
+
     # create pose mgs list form yaml
     poses = poses_from_yaml("/dev_ws/src/trajectory_tools/yaml/scan_path.yaml")
 
@@ -71,10 +71,9 @@ def robot_program():
         rospy.loginfo("robot program: failed to start reconstruction")
     
     for pose_goal in poses[1:]:
-        th.sequencer.plan(Lin(goal=(pose_goal), vel_scale = 0.1, acc_scale = 0.05))
+        th.sequencer.plan(Lin(goal=(pose_goal), vel_scale = 0.1, acc_scale = 0.1))
         th.sequencer.execute()
 
-    #rospy.sleep(1.0)
     # Stop reconstruction with service srv_req
     resp = stop_recon(stop_srv_req)
 
@@ -85,12 +84,6 @@ def robot_program():
         rospy.loginfo("robot program: reconstruction stopped successfully")
     else:
         rospy.loginfo("robot program: failed to stop reconstruction")
-
-    if resp:
-        rospy.loginfo("robot program: reconstruction stopped successfully")
-    else:
-        rospy.loginfo("robot program: failed to stop reconstruction")
-
 
 if __name__ == "__main__":
 

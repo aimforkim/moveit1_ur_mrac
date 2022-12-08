@@ -82,19 +82,20 @@ def robot_program():
     else:
         rospy.loginfo("robot program: failed to start reconstruction")
     
-    # for pose_goal in pose_goals[1:]:
-    #     th.sequencer.plan(Lin(goal=(pose_goal), vel_scale = 0.1, acc_scale = 0.1))
-    #     th.sequencer.execute()
+    for pose_goal in pose_goals[1:]:
+        th.sequencer.plan(Ptp(goal=(pose_goal), vel_scale = 0.1, acc_scale = 0.1))
+        th.sequencer.execute()
 
-    th.sequencer.plan(Lin(goal=pose_goals[1],vel_scale=0.1, acc_scale=0.1))
-    th.sequencer.execute()
-    th.sequencer.plan(Ptp(goal=pose_goals[2],vel_scale=0.1, acc_scale=0.1))
-    th.sequencer.execute()
+    # th.sequencer.plan(Lin(goal=pose_goals[1],vel_scale=0.1, acc_scale=0.1))
+    # th.sequencer.execute()
+    # th.sequencer.plan(Ptp(goal=pose_goals[2],vel_scale=0.1, acc_scale=0.1))
+    # th.sequencer.execute()
 
-    th.sequencer.plan(Ptp(goal=pose_goals[3],vel_scale=0.1, acc_scale=0.1))
-    th.sequencer.execute()
+    # th.sequencer.plan(Ptp(goal=pose_goals[3],vel_scale=0.1, acc_scale=0.1))
+    # th.sequencer.execute()
     # th.sequencer.plan(Lin(goal=pose_goals[4],vel_scale=0.1, acc_scale=0.1))
     # th.sequencer.execute()
+    
     # Stop reconstruction with service srv_req
     resp = stop_recon(stop_srv_req)
 
