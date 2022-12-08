@@ -25,15 +25,25 @@ start_srv_req.tsdf_params.sdf_trunc = 0.004
 start_srv_req.tsdf_params.min_box_values = Vector3(x=0.0, y=0.0, z=0.0)
 start_srv_req.tsdf_params.max_box_values = Vector3(x=0.0, y=0.0, z=0.0)
 start_srv_req.rgbd_params.depth_scale = 1000
-start_srv_req.rgbd_params.depth_trunc = 0.10
+start_srv_req.rgbd_params.depth_trunc = 0.25
 start_srv_req.rgbd_params.convert_rgb_to_intensity = False
 
 stop_srv_req = StopReconstructionRequest()
 # stop_srv_req.archive_directory = '/dev_ws/src.reconstruction/'
-stop_srv_req.mesh_filepath = "/home/aims/test_zigzag.ply"
+stop_srv_req.mesh_filepath = "/home/aims/test_log_flat_angle.ply"
 # stop_srv_req.normal_filters = [NormalFilterParams(
 #                     normal_direction=Vector3(x=0.0, y=0.0, z=1.0), angle=90)]
 # stop_srv_req.min_num_faces = 1000
+
+global ptp_vel
+global ptp_acc
+global scan_vel
+global scan_acc
+
+ptp_vel = 0.3
+ptp_acc = 0.3
+scan_vel = 0.1
+scan_acc = 0.1
 
 
 def robot_program():
@@ -46,21 +56,32 @@ def robot_program():
     start_recon = rospy.ServiceProxy("/start_reconstruction", StartReconstruction)
     stop_recon = rospy.ServiceProxy("/stop_reconstruction", StopReconstruction)
 
+<<<<<<< HEAD
     start = (0.0, -pi / 2.0, pi / 2.0, -pi, -pi / 2.0, 0.0)
 
+=======
+
+    start = (0.0, -pi / 2.0, pi / 2.0, -pi, -pi / 2.0, 0.0)
+    
+>>>>>>> 5e00ce5ccf4ae541a01e3588395a9c5fe50ac11a
     # create pose mgs list form yaml
-    poses = poses_from_yaml("/dev_ws/src/trajectory_tools/yaml/scan_path.yaml")
+    pose_goals = poses_from_yaml("/dev_ws/src/trajectory_tools/yaml/scan_path.yaml")
+    
+    # th.publish_pose_array(pose_goals)
+    th.publish_poses_as_pose_array(pose_goals)
 
-    # publish the poses to rviz for preview
-    # th.publish_poses_as_pose_array(poses)
-    th.publish_marker_array(poses)
+    # attach camera and set new tcp
+    th.attach_camera(ee_name)
+    th.move_group.set_end_effector_link(f"{ee_name}/tcp")
+    rospy.loginfo(
+        f"{th.name}: end effector link set to {th.move_group.get_end_effector_link()}"
+    )
 
-  # Move into position to start reconstruction
+    # Move into position to start reconstruction
     th.sequencer.plan(Ptp(goal=start, vel_scale=0.3, acc_scale=0.3))
     th.sequencer.execute()
-
-    pose1 = poses[0]
-    th.sequencer.plan(Ptp(goal=pose1, vel_scale=0.3, acc_scale=0.3))
+    
+    th.sequencer.plan(Ptp(goal=pose_goals[0], vel_scale=0.2, acc_scale= 0.2))
     th.sequencer.execute()
 
     # Start reconstruction with service srv_req
@@ -70,14 +91,36 @@ def robot_program():
     else:
         rospy.loginfo("robot program: failed to start reconstruction")
     
+<<<<<<< HEAD
     for pose_goal in poses[1:]:
         th.sequencer.plan(Lin(goal=(pose_goal), vel_scale = 0.1, acc_scale = 0.1))
         th.sequencer.execute()
 
     # Stop reconstruction with service srv_req
+=======
+    for pose_goal in pose_goals[1:]:
+        th.sequencer.plan(Ptp(goal=(pose_goal), vel_scale = 0.1, acc_scale = 0.1))
+        th.sequencer.execute()
+
+    # th.sequencer.plan(Lin(goal=pose_goals[1], vel_scale=scan_vel, acc_scale=scan_acc))
+    # th.sequencer.execute()
+
+    # th.sequencer.plan(Ptp(goal=pose_goals[2], vel_scale=scan_vel, acc_scale=scan_acc))
+    # th.sequencer.execute()
+
+    # th.sequencer.plan(Lin(goal=pose_goals[3], vel_scale=scan_vel, acc_scale=scan_acc))
+    # th.sequencer.execute()
+
+    # th.sequencer.plan(Ptp(goal=pose_goals[4], vel_scale=scan_vel, acc_scale=scan_acc))
+    # th.sequencer.execute()
+
+    # th.sequencer.plan(Lin(goal=pose_goals[5], vel_scale=scan_vel, acc_scale=scan_acc))
+    # th.sequencer.execute()
+
+>>>>>>> 5e00ce5ccf4ae541a01e3588395a9c5fe50ac11a
     resp = stop_recon(stop_srv_req)
 
-    th.sequencer.plan(Ptp(goal=start, vel_scale=0.3, acc_scale=0.3))
+    th.sequencer.plan(Ptp(goal=start, vel_scale=ptp_vel, acc_scale=ptp_acc))
     th.sequencer.execute()
 
     if resp:
@@ -85,6 +128,10 @@ def robot_program():
     else:
         rospy.loginfo("robot program: failed to stop reconstruction")
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5e00ce5ccf4ae541a01e3588395a9c5fe50ac11a
 if __name__ == "__main__":
 
     robot_program()

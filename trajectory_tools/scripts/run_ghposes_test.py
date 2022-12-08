@@ -15,7 +15,18 @@ def pose_from_list(pose_list: List[float]) -> Pose:
         position=Point(pose_list[0], pose_list[1], pose_list[2]), 
         orientation=Quaternion(pose_list[3], pose_list[4], pose_list[5], pose_list[6]))
     return pose
-    
+
+
+global ptp_vel
+global ptp_acc
+global scan_vel
+global scan_acc
+
+ptp_vel = 0.3
+ptp_acc = 0.3
+scan_vel = 0.1
+scan_acc = 0.1
+
 def robot_program():
 
     th = TrajectoryHandler()
@@ -24,34 +35,43 @@ def robot_program():
     th.sequencer.plan(Ptp(goal=start))
     th.sequencer.execute()
 
-    sequence = Sequence()
-
     pose_list = rospy.get_param('gh_poses')
     pose_goals = [pose_from_list(pose)for pose in pose_list]
-    pose1 = pose_goals[0]
     
     # th.publish_pose_array(pose_goals)
     th.publish_poses_as_pose_array(pose_goals)
 
-    th.sequencer.plan(Ptp(goal=start, vel_scale=0.3, acc_scale=0.3))
+    th.sequencer.plan(Ptp(goal=start, vel_scale=ptp_vel, acc_scale=ptp_acc))
+    th.sequencer.execute()
+    
+    th.sequencer.plan(Ptp(goal=pose_goals[0], vel_scale=ptp_vel, acc_scale= ptp_acc))
     th.sequencer.execute()
 
-    th.sequencer.plan(Ptp(goal=pose1, vel_scale=0.3, acc_scale=0.3))
+    th.sequencer.plan(Lin(goal=pose_goals[1], vel_scale=scan_vel, acc_scale=scan_acc))
     th.sequencer.execute()
 
-    for pose_goal in pose_goals[1:]:
-        th.sequencer.plan(Lin(goal=(pose_goal), vel_scale = 0.1, acc_scale = 0.1))
-        th.sequencer.execute()
-    
-    
-    th.sequencer.plan(Ptp(goal=start, vel_scale=0.3, acc_scale=0.3))
+    th.sequencer.plan(Ptp(goal=pose_goals[2], vel_scale=scan_vel, acc_scale=scan_acc))
     th.sequencer.execute()
-    
-    th.sequencer.plan(sequence)
+
+    th.sequencer.plan(Ptp(goal=pose_goals[3], vel_scale=scan_vel, acc_scale=scan_acc))
+    th.sequencer.execute()
+
+    th.sequencer.plan(Lin(goal=pose_goals[4], vel_scale=scan_vel, acc_scale=scan_acc))
+    th.sequencer.execute()
+
+    th.sequencer.plan(Ptp(goal=pose_goals[5], vel_scale=scan_vel, acc_scale=scan_acc))
+    th.sequencer.execute()
+
+    th.sequencer.plan(Ptp(goal=pose_goals[6], vel_scale=scan_vel, acc_scale=scan_acc))
+    th.sequencer.execute()
+
+    th.sequencer.plan(Lin(goal=pose_goals[7], vel_scale=scan_vel, acc_scale=scan_acc))
+    th.sequencer.execute()
+
+    th.sequencer.plan(Ptp(goal=start, vel_scale=ptp_vel, acc_scale=ptp_acc))
+    th.sequencer.execute()
 
     th.display_trajectory()
-
-    th.sequencer.execute()
 
 
 if __name__ == "__main__":
