@@ -44,7 +44,7 @@ def robot_program():
     #     )
 
     for pose_goal in pose_goals:
-        sequence.append(Lin(goal=(pose_goal), vel_scale = 0.1, acc_scale = 0.05))
+        sequence.append(Ptp(goal=(pose_goal), vel_scale = 0.1, acc_scale = 0.1))
     
     
     sequence.append(Ptp(goal=(start), vel_scale=0.2, acc_scale=0.05))

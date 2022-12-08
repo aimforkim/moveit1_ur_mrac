@@ -180,10 +180,10 @@ catkin_install_python(
   examples/subframe_example.py
   scripts/aims_move_group_sequence.py
   scripts/aims_sequencer.py
-  scripts/test1_read_ghposes.py
-  scripts/test1_run_ghposes.py
-  scripts/test2_run_ghposes.py
-  scripts/test3_run_ghposes.py
+  scripts/read_ghposes.py
+  scripts/run_ghposes_test.py
+  scripts/run_ghposes.py
+  scripts/run_yamlfromgh.py
   scripts/aims_scanning.py
   scripts/aims_sequence_from_yaml.py
   scripts/aims_scan_from_yaml.py
