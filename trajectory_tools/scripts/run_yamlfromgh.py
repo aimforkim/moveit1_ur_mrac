@@ -13,7 +13,6 @@ from move_group_sequence.move_group_sequence import (Circ, Lin, Ptp, Sequence,
                                                      from_euler)
 from trajectory_tools.trajectory_handler import TrajectoryHandler, poses_from_yaml
 from typing import List
-from yaml import safe_load
 
 def robot_program():
 
@@ -41,31 +40,11 @@ def robot_program():
     th.sequencer.plan(Ptp(goal=poses[0], vel_scale=ptp_vel, acc_scale= ptp_acc))
     th.sequencer.execute()
 
-    # th.sequencer.plan(Lin(goal=poses[1], vel_scale=scan_vel, acc_scale=scan_acc))
-    # th.sequencer.execute()
-
-    th.sequencer.plan(Ptp(goal=poses[2], vel_scale=scan_vel, acc_scale=scan_acc))
-    th.sequencer.execute()
-
-    th.sequencer.plan(Lin(goal=poses[3], vel_scale=scan_vel, acc_scale=scan_acc))
-    th.sequencer.execute()
-
-    th.sequencer.plan(Ptp(goal=poses[4], vel_scale=scan_vel, acc_scale=scan_acc))
-    th.sequencer.execute()
-
-<<<<<<< HEAD
     # th.sequencer.plan(Lin(goal=poses[7], vel_scale=scan_vel, acc_scale=scan_acc))
     # th.sequencer.execute()
     for pose_goal in poses[1:]:
         th.sequencer.plan(Ptp(goal=(pose_goal), vel_scale = 0.1, acc_scale = 0.1))
         th.sequencer.execute()
-=======
-    th.sequencer.plan(Lin(goal=poses[5], vel_scale=scan_vel, acc_scale=scan_acc))
-    th.sequencer.execute()
-    # for pose_goal in poses[2:]:
-    #     th.sequencer.plan(Ptp(goal=(pose_goal), vel_scale = 0.1, acc_scale = 0.1))
-    #     th.sequencer.execute()
->>>>>>> 5e00ce5ccf4ae541a01e3588395a9c5fe50ac11a
     
     th.sequencer.plan(Ptp(goal=(start), vel_scale=ptp_vel, acc_scale=ptp_acc))
     th.sequencer.execute() 

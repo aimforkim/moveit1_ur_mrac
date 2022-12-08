@@ -3,7 +3,6 @@
 path:
  - pose_id: 0
    position: [0.74, -0.4 , 0.29]
-<<<<<<< HEAD
    quaternion: [0.707106781187, -0.707106781187, 0.0, 0.0]
  - pose_id: 1
    position: [0.74, 0.455 , 0.29]
@@ -20,24 +19,3 @@ path:
  - pose_id: 5
    position: [0.975, 0.455 , 0.29]
    quaternion: [0.707106781187, -0.707106781187, 0.0, 0.0]
-=======
-   quaternion: [0.0, 1.0, 0.0, 0.0]
- - pose_id: 1
-   position: [0.74, 0.455 , 0.29]
-   quaternion: [0.0, 1.0, 0.0, 0.0]   
- - pose_id: 2
-   position: [0.8525, 0.455 , 0.29]
-   quaternion: [0.0, 1.0, 0.0, 0.0]
- - pose_id: 3
-   position: [0.8525, -0.4 , 0.29]
-   quaternion: [0.0, 1.0, 0.0, 0.0]
- - pose_id: 4
-   position: [0.985, -0.4 , 0.29]
-   quaternion: [0.0, 1.0, 0.0, 0.0]
- - pose_id: 5
-   position: [0.970, 0.0 , 0.29]
-   quaternion: [0.0, 1.0, 0.0, 0.0]
- - pose_id: 6
-   position: [0.955, 0.455 , 0.29]
-   quaternion: [0.0, 1.0, 0.0, 0.0]
->>>>>>> 5e00ce5ccf4ae541a01e3588395a9c5fe50ac11a

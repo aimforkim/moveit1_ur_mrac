@@ -56,14 +56,8 @@ def robot_program():
     start_recon = rospy.ServiceProxy("/start_reconstruction", StartReconstruction)
     stop_recon = rospy.ServiceProxy("/stop_reconstruction", StopReconstruction)
 
-<<<<<<< HEAD
     start = (0.0, -pi / 2.0, pi / 2.0, -pi, -pi / 2.0, 0.0)
 
-=======
-
-    start = (0.0, -pi / 2.0, pi / 2.0, -pi, -pi / 2.0, 0.0)
-    
->>>>>>> 5e00ce5ccf4ae541a01e3588395a9c5fe50ac11a
     # create pose mgs list form yaml
     pose_goals = poses_from_yaml("/dev_ws/src/trajectory_tools/yaml/scan_path.yaml")
     
@@ -91,33 +85,11 @@ def robot_program():
     else:
         rospy.loginfo("robot program: failed to start reconstruction")
     
-<<<<<<< HEAD
-    for pose_goal in poses[1:]:
+    for pose_goal in pose_goals[1:]:
         th.sequencer.plan(Lin(goal=(pose_goal), vel_scale = 0.1, acc_scale = 0.1))
         th.sequencer.execute()
 
     # Stop reconstruction with service srv_req
-=======
-    for pose_goal in pose_goals[1:]:
-        th.sequencer.plan(Ptp(goal=(pose_goal), vel_scale = 0.1, acc_scale = 0.1))
-        th.sequencer.execute()
-
-    # th.sequencer.plan(Lin(goal=pose_goals[1], vel_scale=scan_vel, acc_scale=scan_acc))
-    # th.sequencer.execute()
-
-    # th.sequencer.plan(Ptp(goal=pose_goals[2], vel_scale=scan_vel, acc_scale=scan_acc))
-    # th.sequencer.execute()
-
-    # th.sequencer.plan(Lin(goal=pose_goals[3], vel_scale=scan_vel, acc_scale=scan_acc))
-    # th.sequencer.execute()
-
-    # th.sequencer.plan(Ptp(goal=pose_goals[4], vel_scale=scan_vel, acc_scale=scan_acc))
-    # th.sequencer.execute()
-
-    # th.sequencer.plan(Lin(goal=pose_goals[5], vel_scale=scan_vel, acc_scale=scan_acc))
-    # th.sequencer.execute()
-
->>>>>>> 5e00ce5ccf4ae541a01e3588395a9c5fe50ac11a
     resp = stop_recon(stop_srv_req)
 
     th.sequencer.plan(Ptp(goal=start, vel_scale=ptp_vel, acc_scale=ptp_acc))
@@ -128,10 +100,6 @@ def robot_program():
     else:
         rospy.loginfo("robot program: failed to stop reconstruction")
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 5e00ce5ccf4ae541a01e3588395a9c5fe50ac11a
 if __name__ == "__main__":
 
     robot_program()
